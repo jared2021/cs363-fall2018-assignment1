@@ -9,6 +9,7 @@
 //default constructor
 Array::Array (void)
 {
+	use_data_=true;
 	cur_size_=5;
 	max_size_=10;
 	data_[cur_size_];
@@ -21,6 +22,7 @@ Array::Array (void)
  */
 Array::Array (size_t length)
 {
+	use_data_=true;
 	cur_size_=length;
 	max_size_=cur_size_ * 2;
 	data_[cur_size_];
@@ -34,6 +36,7 @@ Array::Array (size_t length)
  */
 Array::Array (size_t length, char fill)
 {
+	use_data_=true;
 	cur_size_=length;
 	max_size_=cur_size_ * 2;
 	data_[cur_size_];
@@ -80,9 +83,15 @@ const Array & Array::operator = (const Array & rhs)
  */
 char & Array::operator [] (size_t index)
 {
-	return data_[index];
+	if(use_data_=true)
+	{
+		return data_[index];
+	}
+	else
+	{
+		return new_data_[index];
+	}
 }
-
 /**
  * @overload
  *
@@ -92,7 +101,6 @@ const char & Array::operator [] (size_t index) const
 {
 	return data_[index];
 }
-
 /**
  * Get the character at the specified index. If the /a index is not within
  * the range of the array, then std::out_of_range exception is thrown.
@@ -105,7 +113,6 @@ char Array::get (size_t index) const
 {
 	return data_[index];
 }
-
 /**Set the character at the specified /a index. If the /a index is not
  * within range of the array, then std::out_of_range exception is
  * thrown.
@@ -116,7 +123,14 @@ char Array::get (size_t index) const
  */
 void Array::set (size_t index, char value)
 {
-	data_[index]=value;
+	if(use_data_=true)
+	{
+		data_[index]=value;
+	}
+	else
+	{
+		new_data_[index]=value;
+	}
 }
 
 /**
@@ -133,13 +147,27 @@ void Array::set (size_t index, char value)
  */
 void Array::resize (size_t new_size)
 {
-	char new_data_[new_size];
-	for(int i=0;i<cur_size_;++i)
+	if(use_data_=true)
 	{
-		new_data_[i]=data_[i];
+		new_data_[new_size];
+		for(int i=0;i<cur_size_;++i)
+		{
+			new_data_[i]=data_[i];
+			data_[i]=0;
+		}
+		use_data_=false;
+	}
+	else
+	{
+		char data_[new_size];
+		for(int i=0;i<cur_size_;++i)
+		{
+			data_[i]=new_data_[i];
+			new_data_=0;
+		}
+		use_data_=true;
 	}
 }
-
 /**
  * Locate the specified character in the array. The index of the first
  * occurence of the character is returned. If the character is not
@@ -151,9 +179,26 @@ void Array::resize (size_t new_size)
  */
 int Array::find (char ch) const
 {
-	
+	bool found=false;
+	int i=0;
+	while(i<cur_size_)
+	{
+		if(data_[i]==ch)
+		{
+			return i;
+			found =true;
+			i=cur_size_;
+		}
+		else
+		{
+			i=i+1;
+		}
+	}
+	if(found=false)
+	{
+		return -1;
+	}
 }
-
 /**
  * @overload
  *
@@ -169,7 +214,25 @@ int Array::find (char ch) const
  */
 int Array::find (char ch, size_t start) const
 {
-
+	bool found=false;
+	int i=start;
+	while(i<cur_size_)
+	{
+		if(data_[i]==ch)
+		{
+			found=true;
+			return i;
+			i=cur_size_;
+		}
+		else
+		{
+			i=i+1;
+		}
+	}
+	if(found=false)
+	{
+		return -1;
+	}
 }
 
 /**
@@ -206,6 +269,7 @@ void Array::fill (char ch)
 
 }
 
+/// Shrinks the array to reclaim unused space.
 void Array::shrink (void)
 {
   
