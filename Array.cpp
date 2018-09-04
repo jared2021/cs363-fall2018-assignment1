@@ -266,7 +266,20 @@ bool Array::operator != (const Array & rhs) const
  */
 void Array::fill (char ch)
 {
-
+	if(use_data_=true)
+	{
+		for(int i=0;i<cur_size_;++i)
+		{
+			data_[i]=ch;
+		}
+	}
+	else
+	{
+		for(int i=0;i<cur_size_;++i)
+		{
+			new_data_[i]=ch;
+		}
+	}
 }
 
 /// Shrinks the array to reclaim unused space.
@@ -278,7 +291,30 @@ void Array::shrink (void)
 ///the last element and the last element is the first element.
 void Array::reverse (void)
 {
-  
+	if(use_data_=true)
+	{
+		int end=cur_size_;
+		int temp=0;
+		for(int i=0;i>end;++i)
+		{
+			temp=data_[end];
+			data_[end]=data_[i];
+			data_[i]=temp;
+			end=end-1;
+		}
+	}
+	else
+	{
+		int end=cur_size_;
+		int temp=0;
+		for(int i=0;i>end;++i)
+		{
+			temp=new_data_[end];
+			new_data_[end]=new_data_[i];
+			new_data_[i]=temp;
+			end=end-1;
+		}
+	}
 }
 
 /**
