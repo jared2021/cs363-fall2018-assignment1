@@ -9,7 +9,6 @@
 //default constructor
 Array::Array (void)
 {
-	use_data_=true;
 	cur_size_=5;
 	max_size_=10;
 	data_[cur_size_];
@@ -22,7 +21,6 @@ Array::Array (void)
  */
 Array::Array (size_t length)
 {
-	use_data_=true;
 	cur_size_=length;
 	max_size_=cur_size_ * 2;
 	data_[cur_size_];
@@ -36,7 +34,6 @@ Array::Array (size_t length)
  */
 Array::Array (size_t length, char fill)
 {
-	use_data_=true;
 	cur_size_=length;
 	max_size_=cur_size_ * 2;
 	data_[cur_size_];
@@ -70,7 +67,7 @@ Array::~Array (void)
  */
 const Array & Array::operator = (const Array & rhs)
 {
-
+	
 }
 
 /**
@@ -83,14 +80,7 @@ const Array & Array::operator = (const Array & rhs)
  */
 char & Array::operator [] (size_t index)
 {
-	if(use_data_=true)
-	{
-		return data_[index];
-	}
-	else
-	{
-		return new_data_[index];
-	}
+	return data_[index];
 }
 /**
  * @overload
@@ -123,16 +113,8 @@ char Array::get (size_t index) const
  */
 void Array::set (size_t index, char value)
 {
-	if(use_data_=true)
-	{
-		data_[index]=value;
-	}
-	else
-	{
-		new_data_[index]=value;
-	}
+	data_[index]=value;
 }
-
 /**
  * Set a new size for the array. If /a new_size is less than the current
  * size, then the array is truncated. If /a new_size if greater then the 
@@ -147,25 +129,16 @@ void Array::set (size_t index, char value)
  */
 void Array::resize (size_t new_size)
 {
-	if(use_data_=true)
+	char new_data_[cur_size_];
+	for(int i=0;i<cur_size_;++i)
 	{
-		new_data_[new_size];
-		for(int i=0;i<cur_size_;++i)
-		{
-			new_data_[i]=data_[i];
-			data_[i]=0;
-		}
-		use_data_=false;
+		new_data_[i]=data_[i];
 	}
-	else
+	char data_[new_size];
+	cur_size_=new_size;
+	for(int i=0;i<cur_size_;++i)
 	{
-		char data_[new_size];
-		for(int i=0;i<cur_size_;++i)
-		{
-			data_[i]=new_data_[i];
-			new_data_=0;
-		}
-		use_data_=true;
+		data_[i]=new_data_[i];
 	}
 }
 /**
@@ -244,7 +217,7 @@ int Array::find (char ch, size_t start) const
  */
 bool Array::operator == (const Array & rhs) const
 {
-
+	
 }
 
 /**
@@ -266,57 +239,34 @@ bool Array::operator != (const Array & rhs) const
  */
 void Array::fill (char ch)
 {
-	if(use_data_=true)
+	for(int i=0;i<cur_size_;++i)
 	{
-		for(int i=0;i<cur_size_;++i)
-		{
-			data_[i]=ch;
-		}
-	}
-	else
-	{
-		for(int i=0;i<cur_size_;++i)
-		{
-			new_data_[i]=ch;
-		}
+		data_[i]=ch;
 	}
 }
-
 /// Shrinks the array to reclaim unused space.
 void Array::shrink (void)
 {
-  
+	if(cur_size_>max_size_)
+	{
+		cur_size_=max_size_;
+		char data_[cur_size_];
+	}
 }
 ///Reverse the contents of the array such that the first element is now
 ///the last element and the last element is the first element.
 void Array::reverse (void)
 {
-	if(use_data_=true)
+	int end=cur_size_;
+	int temp=0;
+	for(int i=0;i>end;++i)
 	{
-		int end=cur_size_;
-		int temp=0;
-		for(int i=0;i>end;++i)
-		{
-			temp=data_[end];
-			data_[end]=data_[i];
-			data_[i]=temp;
-			end=end-1;
-		}
-	}
-	else
-	{
-		int end=cur_size_;
-		int temp=0;
-		for(int i=0;i>end;++i)
-		{
-			temp=new_data_[end];
-			new_data_[end]=new_data_[i];
-			new_data_[i]=temp;
-			end=end-1;
-		}
+		temp=data_[end];
+		data_[end]=data_[i];
+		data_[i]=temp;
+		end=end-1;
 	}
 }
-
 /**
  * The slice() method returns a shallow copy of a portion of an array into 
  * a new array object selected from begin to end (end not included).
@@ -327,9 +277,12 @@ void Array::reverse (void)
  */
 Array Array::slice (size_t begin)const
 {
-  
+	Array* myArray=new Array[cur_size_];
+	for(int i=begin;i<cur_size_;++i)
+	{
+		myArray[i]=data_[i];
+	}
 }
-
 /**
  * @overload
  *
@@ -339,5 +292,9 @@ Array Array::slice (size_t begin)const
  */
 Array Array::slice (size_t begin, size_t end)const
 {
-  
+	Array* myArray=new Array[cur_size_];
+	for(int i=begin;i<end;++i)
+	{
+		myArray[i]=data_[i];
+	}
 }
