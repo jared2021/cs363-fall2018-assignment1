@@ -56,7 +56,7 @@ Array::Array (const Array & array)
 	data_[cur_size_];
 	for(int i=0;i<cur_size_;++i)
 	{
-		data_[i]=array[i];
+		data_[i]=(array).get(i);
 	}
 }
 
@@ -76,7 +76,7 @@ const Array & Array::operator = (const Array & rhs)
 {
 	for(int i=0;i<cur_size_;++i)
 	{
-		data_[i]=rhs[i];
+		data_[i]=(rhs).get(i);
 		return data_[i];
 	}
 }
@@ -288,13 +288,13 @@ bool Array::operator == (const Array & rhs) const
 	int i=0;
 	while(i<cur_size_)
 	{
-		if(data_[i]<rhs[i])
+		if(data_[i]<(rhs).get(i))
 		{
 			equal=false;
 			i=cur_size_;
 			return false;
 		}
-		else if(data_[i]>rhs[i])
+		else if(data_[i]>(rhs).get(i))
 		{
 			equal=false;
 			i=cur_size_;
@@ -324,13 +324,13 @@ bool Array::operator != (const Array & rhs) const
 	int i=0;
 	while(i<cur_size_)
 	{
-		if(data_[i]<rhs[i])
+		if(data_[i]<(rhs).get(i))
 		{
 			equal=false;
 			i=cur_size_;
 			return true;
 		}
-		else if(data_[i]>rhs[i])
+		else if(data_[i]>(rhs).get(i))
 		{
 			equal=false;
 			i=cur_size_;
