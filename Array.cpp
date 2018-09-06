@@ -51,7 +51,7 @@ Array::Array (size_t length, char fill)
  */
 Array::Array (const Array & array)
 {
-	cur_size_=array->size();
+	cur_size_=(array).size();
 	max_size_=cur_size_ * 2;
 	data_[cur_size_];
 	for(int i=0;i<cur_size_;++i)
@@ -76,8 +76,8 @@ const Array & Array::operator = (const Array & rhs)
 {
 	for(int i=0;i<cur_size_;++i)
 	{
-		this-> data_[i]=data_[i];
-		return this-> data_[i];
+		data_[i]=rhs[i];
+		return data_[i];
 	}
 }
 
@@ -288,13 +288,13 @@ bool Array::operator == (const Array & rhs) const
 	int i=0;
 	while(i<cur_size_)
 	{
-		if(this->data_[i]<data_[i])
+		if(data_[i]<rhs[i])
 		{
 			equal=false;
 			i=cur_size_;
 			return false;
 		}
-		else if(this->data_[i]>data_[i])
+		else if(data_[i]>rhs[i])
 		{
 			equal=false;
 			i=cur_size_;
@@ -324,13 +324,13 @@ bool Array::operator != (const Array & rhs) const
 	int i=0;
 	while(i<cur_size_)
 	{
-		if(this->data_[i]<data_[i])
+		if(data_[i]<rhs[i])
 		{
 			equal=false;
 			i=cur_size_;
 			return true;
 		}
-		else if(this->data_[i]>data_[i])
+		else if(data_[i]>rhs[i])
 		{
 			equal=false;
 			i=cur_size_;
