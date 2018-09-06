@@ -6,6 +6,7 @@
 // on this assignment.
 
 #include "Array.h"
+#include <stdexcept>
 //default constructor
 Array::Array (void)
 {
@@ -50,7 +51,13 @@ Array::Array (size_t length, char fill)
  */
 Array::Array (const Array & array)
 {
-
+	cur_size_=array->size();
+	max_size_=cur_size_ * 2;
+	data_[cur_size_];
+	for(int i=0;i<cur_size_;++i)
+	{
+		data_[i]=array[i];
+	}
 }
 
 ///Destructor
@@ -67,7 +74,11 @@ Array::~Array (void)
  */
 const Array & Array::operator = (const Array & rhs)
 {
-	
+	for(int i=0;i<cur_size_;++i)
+	{
+		this-> data_[i]=data_[i];
+		return this-> data_[i];
+	}
 }
 
 /**
@@ -80,7 +91,15 @@ const Array & Array::operator = (const Array & rhs)
  */
 char & Array::operator [] (size_t index)
 {
-	return data_[index];
+	try
+	{
+		return data_[index];
+	}
+	catch(std::out_of_range)
+	{
+		index=cur_size_;
+		return data_[index];
+	}
 }
 /**
  * @overload
@@ -89,7 +108,15 @@ char & Array::operator [] (size_t index)
  */
 const char & Array::operator [] (size_t index) const
 {
-	return data_[index];
+	try
+	{
+		return data_[index];
+	}
+	catch(std::out_of_range)
+	{
+		index=cur_size_;
+		return data_[index];
+	}
 }
 /**
  * Get the character at the specified index. If the /a index is not within
@@ -101,7 +128,15 @@ const char & Array::operator [] (size_t index) const
  */
 char Array::get (size_t index) const
 {
-	return data_[index];
+	try
+	{
+		return data_[index];
+	}
+	catch(std::out_of_range)
+	{
+		index=cur_size_;
+		return data_[index];
+	}
 }
 /**Set the character at the specified /a index. If the /a index is not
  * within range of the array, then std::out_of_range exception is
@@ -113,7 +148,15 @@ char Array::get (size_t index) const
  */
 void Array::set (size_t index, char value)
 {
-	data_[index]=value;
+	try
+	{
+		data_[index]=value;
+	}
+	catch(std::out_of_range)
+	{
+		index=cur_size_;
+		data_[index]=value;
+	}
 }
 /**
  * Set a new size for the array. If /a new_size is less than the current
@@ -187,27 +230,51 @@ int Array::find (char ch) const
  */
 int Array::find (char ch, size_t start) const
 {
-	bool found=false;
-	int i=start;
-	while(i<cur_size_)
+	try
 	{
-		if(data_[i]==ch)
+		bool found=false;
+		int i=start;
+		while(i<cur_size_)
 		{
-			found=true;
-			return i;
-			i=cur_size_;
+			if(data_[i]==ch)
+			{
+				found=true;
+				return i;
+				i=cur_size_;
+			}
+			else
+			{
+				i=i+1;
+			}
 		}
-		else
+		if(found==false)
 		{
-			i=i+1;
+			return -1;
 		}
 	}
-	if(found=false)
+	catch(std::out_of_range)
 	{
-		return -1;
+		bool found=false;
+		int i=0;
+		while(i<cur_size_)
+		{
+			if(data_[i]==ch)
+			{
+				found=true;
+				return i;
+				i=cur_size_;
+			}
+			else
+			{
+				i=i+1;
+			}
+		}
+		if(found==false)
+		{
+			return -1;
+		}
 	}
 }
-
 /**
  * Test the array for inequality.
  *
@@ -217,7 +284,31 @@ int Array::find (char ch, size_t start) const
  */
 bool Array::operator == (const Array & rhs) const
 {
-	
+	bool equal=true;
+	int i=0;
+	while(i<cur_size_)
+	{
+		if(this->data_[i]<data_[i])
+		{
+			equal=false;
+			i=cur_size_;
+			return false;
+		}
+		else if(this->data_[i]>data_[i])
+		{
+			equal=false;
+			i=cur_size_;
+			return false;
+		}
+		else
+		{
+			i=i+1;
+		}
+	}
+	if(equal==true)
+	{
+		return true;
+	}
 }
 
 /**
@@ -229,7 +320,31 @@ bool Array::operator == (const Array & rhs) const
  */
 bool Array::operator != (const Array & rhs) const
 {
-
+	bool equal=true;
+	int i=0;
+	while(i<cur_size_)
+	{
+		if(this->data_[i]<data_[i])
+		{
+			equal=false;
+			i=cur_size_;
+			return true;
+		}
+		else if(this->data_[i]>data_[i])
+		{
+			equal=false;
+			i=cur_size_;
+			return true;
+		}
+		else
+		{
+			i=i+1;
+		}
+	}
+	if(equal==true)
+	{
+		return false;
+	}
 }
 
 /**
