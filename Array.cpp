@@ -12,7 +12,7 @@ Array::Array (void)
 {
 	cur_size_=5;
 	max_size_=10;
-	data_[cur_size_];
+	data_=new char[cur_size_];
 }
 
 /**
@@ -24,7 +24,7 @@ Array::Array (size_t length)
 {
 	cur_size_=length;
 	max_size_=cur_size_ * 2;
-	data_[cur_size_];
+	data_=new char[cur_size_];
 }
 
 /**
@@ -37,7 +37,7 @@ Array::Array (size_t length, char fill)
 {
 	cur_size_=length;
 	max_size_=cur_size_ * 2;
-	data_[cur_size_];
+	data_=new char[cur_size_];
 	for(int i=0;i<cur_size_;++i)
 	{
 		data_[i]=fill;
@@ -53,7 +53,7 @@ Array::Array (const Array & array)
 {
 	cur_size_=(array).size();
 	max_size_=cur_size_ * 2;
-	data_[cur_size_];
+	data_=new char[cur_size_];
 	for(int i=0;i<cur_size_;++i)
 	{
 		data_[i]=(array).get(i);
