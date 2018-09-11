@@ -21,11 +21,7 @@ Array::Array (void)
   // COMMENT There is no need to initialize the array with a default value because (1) the
   // user may not want to initialize it with the value you chose and (2) if they did they would
   // use the fill constructor.
-  
-	for(int i=0;i<cur_size_;++i)
-	{
-		data_[i]=0;
-	}
+  //RESPONSE Removed for loop that initialized variables in the array  
 }
 
 /**
@@ -45,11 +41,7 @@ Array::Array (size_t length)
   // COMMENT There is no need to initialize the array with a default value because (1) the
   // user may not want to initialize it with the value you chose and (2) if they did they would
   // use the fill constructor.
-  
-	for(int i=0;i<cur_size_;++i)
-	{
-		data_[i]=0;
-	}
+  //RESPONSE Removed for loop that initialized variables in the array  
 }
 
 /**
