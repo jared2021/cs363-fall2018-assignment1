@@ -9,10 +9,19 @@
 #include <stdexcept>
 //default constructor
 Array::Array (void)
+// COMMENT Initialize all member variables in the base member initialization section
+// of the constructor on its own line. Otherwise, it is hard to know what initialization
+// has an error since it will not have its own unique line number.
 {
+
 	cur_size_=5;
 	max_size_=10;
 	data_=new char[cur_size_];
+  
+  // COMMENT There is no need to initialize the array with a default value because (1) the
+  // user may not want to initialize it with the value you chose and (2) if they did they would
+  // use the fill constructor.
+  
 	for(int i=0;i<cur_size_;++i)
 	{
 		data_[i]=0;
@@ -25,10 +34,18 @@ Array::Array (void)
  * @param[in]	length	Initial size
  */
 Array::Array (size_t length)
+// COMMENT Initialize all member variables in the base member initialization section
+// of the constructor on its own line. Otherwise, it is hard to know what initialization
+// has an error since it will not have its own unique line number.
 {
 	cur_size_=length;
 	max_size_=cur_size_ * 2;
 	data_=new char[cur_size_];
+  
+  // COMMENT There is no need to initialize the array with a default value because (1) the
+  // user may not want to initialize it with the value you chose and (2) if they did they would
+  // use the fill constructor.
+  
 	for(int i=0;i<cur_size_;++i)
 	{
 		data_[i]=0;
@@ -42,6 +59,9 @@ Array::Array (size_t length)
  * @param[in]	fill 	Initial value for each element
  */
 Array::Array (size_t length, char fill)
+// COMMENT Initialize all member variables in the base member initialization section
+// of the constructor on its own line. Otherwise, it is hard to know what initialization
+// has an error since it will not have its own unique line number.
 {
 	cur_size_=length;
 	max_size_=cur_size_ * 2;
@@ -58,12 +78,17 @@ Array::Array (size_t length, char fill)
  * @param[in]	arr	The source array
  */
 Array::Array (const Array & array)
+// COMMENT Initialize all member variables in the base member initialization section
+// of the constructor on its own line. Otherwise, it is hard to know what initialization
+// has an error since it will not have its own unique line number.
 {
 	cur_size_=(array).size();
 	max_size_=cur_size_ * 2;
 	data_=new char[cur_size_];
 	for(int i=0;i<cur_size_;++i)
 	{
+    // COMMENT Do not call the get() method as you will be doing an unnecessary
+    // bound check on an index that is already in range.
 		data_[i]=(array).get(i);
 	}
 }
@@ -71,7 +96,7 @@ Array::Array (const Array & array)
 ///Destructor
 Array::~Array (void)
 {
-
+  // COMMENT You have a memory leak here.
 }
 
 /**
@@ -82,11 +107,19 @@ Array::~Array (void)
  */
 const Array & Array::operator = (const Array & rhs)
 {
+  // COMMENT Check for self assignment first.
+
 	for(int i=0;i<cur_size_;++i)
 	{
+    // COMMENT Do not call the get() method as you will be doing an unnecessary
+    // bound check on an index that is already in range.
+
 		data_[i]=(rhs).get(i);
 		return data_[i];
 	}
+  
+  // COMMENT This method should return *this for call chaining.
+
 }
 
 /**
@@ -99,6 +132,8 @@ const Array & Array::operator = (const Array & rhs)
  */
 char & Array::operator [] (size_t index)
 {
+  // COMMENT You are to throw out of range exception if the index is invalid.
+
 	try
 	{
 		return data_[index];
@@ -116,6 +151,8 @@ char & Array::operator [] (size_t index)
  */
 const char & Array::operator [] (size_t index) const
 {
+  // COMMENT You are to throw out of range exception if the index is invalid.
+
 	try
 	{
 		return data_[index];
@@ -136,6 +173,8 @@ const char & Array::operator [] (size_t index) const
  */
 char Array::get (size_t index) const
 {
+  // COMMENT You are to throw out of range exception if the index is invalid.
+
 	try
 	{
 		return data_[index];
@@ -156,6 +195,8 @@ char Array::get (size_t index) const
  */
 void Array::set (size_t index, char value)
 {
+  // COMMENT You are to throw out of range exception if the index is invalid.
+
 	try
 	{
 		data_[index]=value;
@@ -180,6 +221,11 @@ void Array::set (size_t index, char value)
  */
 void Array::resize (size_t new_size)
 {
+  // COMMENT The resize method should only increase the size of the allocation if
+  // the new size is larger than the current memory allocation for the array. If resized,
+  // you need to preserve the old data. Otherwise, you can just update cur_size_ to
+  // reflect the new size.
+  
 	char new_data_[cur_size_];
 	for(int i=0;i<cur_size_;++i)
 	{
@@ -238,6 +284,8 @@ int Array::find (char ch) const
  */
 int Array::find (char ch, size_t start) const
 {
+  // COMMENT You are to throw an exception if the start is invalid.
+
 	try
 	{
 		bool found=false;
@@ -292,16 +340,24 @@ int Array::find (char ch, size_t start) const
  */
 bool Array::operator == (const Array & rhs) const
 {
+  // COMMENT Check for self comparison first.
+
 	bool equal=true;
 	int i=0;
 	while(i<cur_size_)
 	{
+    // COMMENT Do not call the get() method as you will be doing an unnecessary
+    // bound check on an index that is already in range.
+
 		if(data_[i]<(rhs).get(i))
 		{
 			equal=false;
 			i=cur_size_;
 			return false;
 		}
+    // COMMENT Do not call the get() method as you will be doing an unnecessary
+    // bound check on an index that is already in range.
+
 		else if(data_[i]>(rhs).get(i))
 		{
 			equal=false;
@@ -328,16 +384,24 @@ bool Array::operator == (const Array & rhs) const
  */
 bool Array::operator != (const Array & rhs) const
 {
+  // COMMENT You can define operator != in terms of operator ==.
+
 	bool equal=true;
 	int i=0;
 	while(i<cur_size_)
 	{
+    // COMMENT Do not call the get() method as you will be doing an unnecessary
+    // bound check on an index that is already in range.
+
 		if(data_[i]<(rhs).get(i))
 		{
 			equal=false;
 			i=cur_size_;
 			return true;
 		}
+    // COMMENT Do not call the get() method as you will be doing an unnecessary
+    // bound check on an index that is already in range.
+
 		else if(data_[i]>(rhs).get(i))
 		{
 			equal=false;
@@ -370,6 +434,9 @@ void Array::fill (char ch)
 /// Shrinks the array to reclaim unused space.
 void Array::shrink (void)
 {
+  // COMMENT The goal of the shrink method is to reduce the memory allocation
+  // size, if applicable.
+  
 	if(cur_size_>max_size_)
 	{
 		cur_size_=max_size_;
