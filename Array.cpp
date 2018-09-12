@@ -13,7 +13,6 @@ Array::Array (void)
 // of the constructor on its own line. Otherwise, it is hard to know what initialization
 // has an error since it will not have its own unique line number.
 {
-
 	cur_size_=5;
 	max_size_=10;
 	data_=new char[cur_size_];
@@ -81,7 +80,9 @@ Array::Array (const Array & array)
 	{
     // COMMENT Do not call the get() method as you will be doing an unnecessary
     // bound check on an index that is already in range.
-		data_[i]=(array).get(i);
+    // RESPONSE Replaced the get() method with the array getting the value
+    // at the passed in array's index
+		data_[i]=(array).data_[i];
 	}
 }
 
@@ -105,8 +106,9 @@ const Array & Array::operator = (const Array & rhs)
 	{
     // COMMENT Do not call the get() method as you will be doing an unnecessary
     // bound check on an index that is already in range.
-
-		data_[i]=(rhs).get(i);
+    // RESPONSE Replaced the get() method with the array getting the value
+    // at the passed in array's index
+		data_[i]=(rhs).data_[i];
 		return data_[i];
 	}
   
@@ -135,7 +137,7 @@ char & Array::operator [] (size_t index)
 		index=cur_size_;
 		return data_[index];
 	}
-}
+}	
 /**
  * @overload
  *
@@ -340,8 +342,10 @@ bool Array::operator == (const Array & rhs) const
 	{
     // COMMENT Do not call the get() method as you will be doing an unnecessary
     // bound check on an index that is already in range.
+    // RESPONSE Replaced the get() method with the array getting the value
+    // at the passed in array's index
 
-		if(data_[i]<(rhs).get(i))
+		if(data_[i]<(rhs).data_[i])
 		{
 			equal=false;
 			i=cur_size_;
@@ -349,8 +353,10 @@ bool Array::operator == (const Array & rhs) const
 		}
     // COMMENT Do not call the get() method as you will be doing an unnecessary
     // bound check on an index that is already in range.
+    // RESPONSE Replaced the get() method with the array getting the value
+    // at the passed in array's index
 
-		else if(data_[i]>(rhs).get(i))
+		else if(data_[i]>(rhs).data_[i])
 		{
 			equal=false;
 			i=cur_size_;
@@ -384,8 +390,9 @@ bool Array::operator != (const Array & rhs) const
 	{
     // COMMENT Do not call the get() method as you will be doing an unnecessary
     // bound check on an index that is already in range.
-
-		if(data_[i]<(rhs).get(i))
+    //RESPONSE Replaced the get() method with the array getting the value
+    //of the passed in array's index
+		if(data_[i]<(rhs).data_[i])
 		{
 			equal=false;
 			i=cur_size_;
@@ -393,8 +400,9 @@ bool Array::operator != (const Array & rhs) const
 		}
     // COMMENT Do not call the get() method as you will be doing an unnecessary
     // bound check on an index that is already in range.
-
-		else if(data_[i]>(rhs).get(i))
+    //RESPONSE Replaced the get() method with the array getting the value
+    //of the passed in array's index
+		else if(data_[i]>(rhs).data_[i])
 		{
 			equal=false;
 			i=cur_size_;
