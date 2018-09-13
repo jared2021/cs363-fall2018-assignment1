@@ -12,9 +12,11 @@ Array::Array (void)
 // COMMENT Initialize all member variables in the base member initialization section
 // of the constructor on its own line. Otherwise, it is hard to know what initialization
 // has an error since it will not have its own unique line number.
+// RESPONSE Initializing member variables in a base member initialization section
+// of the constructor each on its own line.
+:cur_size_ (5),
+max_size_ (10)
 {
-	cur_size_=5;
-	max_size_=10;
 	data_=new char[cur_size_];
   
   // COMMENT There is no need to initialize the array with a default value because (1) the
@@ -32,9 +34,11 @@ Array::Array (size_t length)
 // COMMENT Initialize all member variables in the base member initialization section
 // of the constructor on its own line. Otherwise, it is hard to know what initialization
 // has an error since it will not have its own unique line number.
+// RESPONSE Initializing member variables in a base member initialization section
+// of the constructor each on its own line.
+:cur_size_ (length),
+max_size_ (cur_size_ * 2)
 {
-	cur_size_=length;
-	max_size_=cur_size_ * 2;
 	data_=new char[cur_size_];
   
   // COMMENT There is no need to initialize the array with a default value because (1) the
@@ -53,9 +57,11 @@ Array::Array (size_t length, char fill)
 // COMMENT Initialize all member variables in the base member initialization section
 // of the constructor on its own line. Otherwise, it is hard to know what initialization
 // has an error since it will not have its own unique line number.
+// RESPONSE Initializing member variables in a base member initialization section
+// of the constructor each on its own line.
+:cur_size_ (length),
+max_size_ (cur_size_ * 2)
 {
-	cur_size_=length;
-	max_size_=cur_size_ * 2;
 	data_=new char[cur_size_];
 	for(int i=0;i<cur_size_;++i)
 	{
@@ -72,9 +78,11 @@ Array::Array (const Array & array)
 // COMMENT Initialize all member variables in the base member initialization section
 // of the constructor on its own line. Otherwise, it is hard to know what initialization
 // has an error since it will not have its own unique line number.
+// RESPONSE Initializing member variables in a base member initialization section
+// of the constructor each on its own line.
+:cur_size_ ((array).size()),
+max_size_ (cur_size_ * 2)
 {
-	cur_size_=(array).size();
-	max_size_=cur_size_ * 2;
 	data_=new char[cur_size_];
 	for(int i=0;i<cur_size_;++i)
 	{
