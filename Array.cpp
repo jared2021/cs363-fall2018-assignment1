@@ -90,6 +90,8 @@ Array::Array (const Array & array)
 Array::~Array (void)
 {
   // COMMENT You have a memory leak here.
+  //
+	delete data_;
 }
 
 /**
@@ -127,8 +129,7 @@ const Array & Array::operator = (const Array & rhs)
 char & Array::operator [] (size_t index)
 {
   // COMMENT You are to throw out of range exception if the index is invalid.
-
-	try
+  	try
 	{
 		return data_[index];
 	}
@@ -137,7 +138,7 @@ char & Array::operator [] (size_t index)
 		index=cur_size_;
 		return data_[index];
 	}
-}	
+}
 /**
  * @overload
  *
@@ -219,17 +220,27 @@ void Array::resize (size_t new_size)
   // the new size is larger than the current memory allocation for the array. If resized,
   // you need to preserve the old data. Otherwise, you can just update cur_size_ to
   // reflect the new size.
-  
-	char new_data_[cur_size_];
-	for(int i=0;i<cur_size_;++i)
+  // RESPONSE resized method now increases allocation size if the new size
+  // is larger than the current memory allocation, while preserving the 
+  // old data. If it is not larger then the it makes sure the new size and 
+  //current size match.
+	if(new_size>cur_size_)
 	{
-		new_data_[i]=data_[i];
+		char new_data_[cur_size_];
+		for(int i=0;i<cur_size_;++i)
+		{
+			new_data_[i]=data_[i];
+		}
+		char *data_=new char [new_size];
+		cur_size_=new_size;
+		for(int i=0;i<cur_size_;++i)
+		{
+			data_[i]=new_data_[i];
+		}
 	}
-	char data_[new_size];
-	cur_size_=new_size;
-	for(int i=0;i<cur_size_;++i)
+	else
 	{
-		data_[i]=new_data_[i];
+		cur_size_=new_size;
 	}
 }
 /**
@@ -383,8 +394,8 @@ bool Array::operator == (const Array & rhs) const
 bool Array::operator != (const Array & rhs) const
 {
   // COMMENT You can define operator != in terms of operator ==.
-
-	bool equal=true;
+  //RESPONSE Defined operator != in terms of operator ==.
+	bool equal=false;
 	int i=0;
 	while(i<cur_size_)
 	{
@@ -392,30 +403,24 @@ bool Array::operator != (const Array & rhs) const
     // bound check on an index that is already in range.
     //RESPONSE Replaced the get() method with the array getting the value
     //of the passed in array's index
-		if(data_[i]<(rhs).data_[i])
+		if(data_[i]==(rhs).data_[i])
 		{
-			equal=false;
+			equal=true;
 			i=cur_size_;
-			return true;
+			return false;
 		}
     // COMMENT Do not call the get() method as you will be doing an unnecessary
     // bound check on an index that is already in range.
-    //RESPONSE Replaced the get() method with the array getting the value
-    //of the passed in array's index
-		else if(data_[i]>(rhs).data_[i])
-		{
-			equal=false;
-			i=cur_size_;
-			return true;
-		}
+    //RESPONSE Removed else if statement and by extenetion get() method as
+    //it was no longer needed.
 		else
 		{
 			i=i+1;
 		}
 	}
-	if(equal==true)
+	if(equal==false)
 	{
-		return false;
+		return true;
 	}
 }
 
@@ -436,11 +441,12 @@ void Array::shrink (void)
 {
   // COMMENT The goal of the shrink method is to reduce the memory allocation
   // size, if applicable.
+  // RESPONSE Shrink method now reduces the maximum memory allocation to match
+  // the current size of the array.
   
-	if(cur_size_>max_size_)
+	if(cur_size_<max_size_)
 	{
-		cur_size_=max_size_;
-		char data_[cur_size_];
+		max_size_=cur_size_;
 	}
 }
 ///Reverse the contents of the array such that the first element is now
