@@ -119,11 +119,12 @@ const Array & Array::operator = (const Array & rhs)
     // RESPONSE Replaced the get() method with the array getting the value
     // at the passed in array's index
 		data_[i]=(rhs).data_[i];
-		return data_[i];
+		return *this;
 	}
   
   // COMMENT This method should return *this for call chaining.
-
+  // RESPONSE Changed return statement to return the Array class itself 
+  // and not the *data_.
 }
 
 /**
@@ -137,13 +138,14 @@ const Array & Array::operator = (const Array & rhs)
 char & Array::operator [] (size_t index)
 {
   // COMMENT You are to throw out of range exception if the index is invalid.
-  	try
+  // RESPONSE Changed it to where it throws an out of range exception when
+  // the index is greater than the alotted size of the array.
+	if(index>cur_size_)
 	{
-		return data_[index];
+		throw std::out_of_range("That index is bigger than the array itself.");
 	}
-	catch(std::out_of_range)
+	else
 	{
-		index=cur_size_;
 		return data_[index];
 	}
 }
@@ -155,14 +157,14 @@ char & Array::operator [] (size_t index)
 const char & Array::operator [] (size_t index) const
 {
   // COMMENT You are to throw out of range exception if the index is invalid.
-
-	try
+  // RESPONSE Changed it to where it throws an out of range exception when 
+  // the index is greater than the alotted size of the array.
+  	if(index>cur_size_)
 	{
-		return data_[index];
+		throw std::out_of_range("That index is bigger than the array itself.");
 	}
-	catch(std::out_of_range)
+	else
 	{
-		index=cur_size_;
 		return data_[index];
 	}
 }
@@ -177,14 +179,12 @@ const char & Array::operator [] (size_t index) const
 char Array::get (size_t index) const
 {
   // COMMENT You are to throw out of range exception if the index is invalid.
-
-	try
+	if(index>cur_size_)
 	{
-		return data_[index];
+		throw std::out_of_range("That index is bigger than the array itself.");
 	}
-	catch(std::out_of_range)
+	else
 	{
-		index=cur_size_;
 		return data_[index];
 	}
 }
@@ -199,14 +199,14 @@ char Array::get (size_t index) const
 void Array::set (size_t index, char value)
 {
   // COMMENT You are to throw out of range exception if the index is invalid.
-
-	try
+  // RESPONSE Changed it to where it throws an out of range exception when 
+  // the index is greater than the allotted size of the array.
+	if(index>cur_size_)
 	{
-		data_[index]=value;
+		throw std::out_of_range("That index is bigger than the array itself.");
 	}
-	catch(std::out_of_range)
+	else
 	{
-		index=cur_size_;
 		data_[index]=value;
 	}
 }
@@ -298,33 +298,16 @@ int Array::find (char ch) const
 int Array::find (char ch, size_t start) const
 {
   // COMMENT You are to throw an exception if the start is invalid.
-
-	try
+  // RESPONSE Changed it to where it throws and out of range exception when
+  // the starting point is greater than the array itself.
+	if(start>cur_size_)
+	{
+		throw std::out_of_range("That index is bigger than the array itself.")
+	}
+	else
 	{
 		bool found=false;
 		int i=start;
-		while(i<cur_size_)
-		{
-			if(data_[i]==ch)
-			{
-				found=true;
-				return i;
-				i=cur_size_;
-			}
-			else
-			{
-				i=i+1;
-			}
-		}
-		if(found==false)
-		{
-			return -1;
-		}
-	}
-	catch(std::out_of_range)
-	{
-		bool found=false;
-		int i=0;
 		while(i<cur_size_)
 		{
 			if(data_[i]==ch)
