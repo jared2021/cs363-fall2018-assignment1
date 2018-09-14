@@ -115,7 +115,7 @@ const Array & Array::operator = (const Array & rhs)
   // to the array.
 	if(this==&rhs)
 	{
-		return true;
+		return *this;
 	}
 	else
 	{
