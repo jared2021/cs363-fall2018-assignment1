@@ -111,22 +111,27 @@ Array::~Array (void)
 const Array & Array::operator = (const Array & rhs)
 {
   // COMMENT Check for self assignment first.
-
-	for(int i=0;i<cur_size_;++i)
+	if(this==&rhs)
 	{
+		return true;
+	}
+	else
+	{
+		for(int i=0;i<cur_size_;++i)
+		{
     // COMMENT Do not call the get() method as you will be doing an unnecessary
     // bound check on an index that is already in range.
     // RESPONSE Replaced the get() method with the array getting the value
     // at the passed in array's index
-		data_[i]=(rhs).data_[i];
-		return *this;
-	}
+			data_[i]=(rhs).data_[i];
+			return *this;
+		}
   
   // COMMENT This method should return *this for call chaining.
   // RESPONSE Changed return statement to return the Array class itself 
   // and not the *data_.
+	}
 }
-
 /**
  * Get the character at the specified index. If the index is not
  * within the range of the array, then std::out_of_range exception
@@ -179,6 +184,8 @@ const char & Array::operator [] (size_t index) const
 char Array::get (size_t index) const
 {
   // COMMENT You are to throw out of range exception if the index is invalid.
+  //RESPONSE Changed it to where it throws an out of range exception when
+  //the index is greater than the allotted size of the array.
 	if(index>cur_size_)
 	{
 		throw std::out_of_range("That index is bigger than the array itself.");
@@ -277,7 +284,7 @@ int Array::find (char ch) const
 			i=i+1;
 		}
 	}
-	if(found=false)
+	if(found==false)
 	{
 		return -1;
 	}
@@ -302,7 +309,7 @@ int Array::find (char ch, size_t start) const
   // the starting point is greater than the array itself.
 	if(start>cur_size_)
 	{
-		throw std::out_of_range("That index is bigger than the array itself.")
+		throw std::out_of_range("That index is bigger than the array itself.");
 	}
 	else
 	{
@@ -337,44 +344,49 @@ int Array::find (char ch, size_t start) const
 bool Array::operator == (const Array & rhs) const
 {
   // COMMENT Check for self comparison first.
-
-	bool equal=true;
-	int i=0;
-	while(i<cur_size_)
-	{
-    // COMMENT Do not call the get() method as you will be doing an unnecessary
-    // bound check on an index that is already in range.
-    // RESPONSE Replaced the get() method with the array getting the value
-    // at the passed in array's index
-
-		if(data_[i]<(rhs).data_[i])
-		{
-			equal=false;
-			i=cur_size_;
-			return false;
-		}
-    // COMMENT Do not call the get() method as you will be doing an unnecessary
-    // bound check on an index that is already in range.
-    // RESPONSE Replaced the get() method with the array getting the value
-    // at the passed in array's index
-
-		else if(data_[i]>(rhs).data_[i])
-		{
-			equal=false;
-			i=cur_size_;
-			return false;
-		}
-		else
-		{
-			i=i+1;
-		}
-	}
-	if(equal==true)
+	if(this==&rhs)
 	{
 		return true;
 	}
-}
+	else
+	{
+		bool equal=true;
+		int i=0;
+		while(i<cur_size_)
+		{
+    // COMMENT Do not call the get() method as you will be doing an unnecessary
+    // bound check on an index that is already in range.
+    // RESPONSE Replaced the get() method with the array getting the value
+    // at the passed in array's index
 
+			if(data_[i]<(rhs).data_[i])
+			{
+				equal=false;
+				i=cur_size_;
+				return false;
+			}
+    // COMMENT Do not call the get() method as you will be doing an unnecessary
+    // bound check on an index that is already in range.
+    // RESPONSE Replaced the get() method with the array getting the value
+    // at the passed in array's index
+
+			else if(data_[i]>(rhs).data_[i])
+			{
+				equal=false;
+				i=cur_size_;
+				return false;
+			}
+			else
+			{
+				i=i+1;
+			}
+		}
+		if(equal==true)
+		{
+			return true;
+		}
+	}
+}
 /**
  * Test the array for inequality.
  *
@@ -385,36 +397,17 @@ bool Array::operator == (const Array & rhs) const
 bool Array::operator != (const Array & rhs) const
 {
   // COMMENT You can define operator != in terms of operator ==.
-  //RESPONSE Defined operator != in terms of operator ==.
-	bool equal=false;
-	int i=0;
-	while(i<cur_size_)
-	{
+  //RESPONSE Defined operator != in terms of operator ==.	
+	return !((*this) == rhs);
     // COMMENT Do not call the get() method as you will be doing an unnecessary
     // bound check on an index that is already in range.
-    //RESPONSE Replaced the get() method with the array getting the value
-    //of the passed in array's index
-		if(data_[i]==(rhs).data_[i])
-		{
-			equal=true;
-			i=cur_size_;
-			return false;
-		}
-    // COMMENT Do not call the get() method as you will be doing an unnecessary
-    // bound check on an index that is already in range.
-    //RESPONSE Removed else if statement and by extenetion get() method as
+    //RESPONSE Removed if statement and by extension get() method as
     //it was no longer needed.
-		else
-		{
-			i=i+1;
-		}
-	}
-	if(equal==false)
-	{
-		return true;
-	}
+    // COMMENT Do not call the get() method as you will be doing an unnecessary
+    // bound check on an index that is already in range.
+    //RESPONSE Removed else if statement and by extension get() method as
+    //it was no longer needed.
 }
-
 /**
  * Fill the contents of the array.
  *
@@ -434,12 +427,11 @@ void Array::shrink (void)
   // size, if applicable.
   // RESPONSE Shrink method now reduces the maximum memory allocation to match
   // the current size of the array.
-  
 	if(cur_size_<max_size_)
 	{
 		max_size_=cur_size_;
 	}
-}
+}	
 ///Reverse the contents of the array such that the first element is now
 ///the last element and the last element is the first element.
 void Array::reverse (void)
@@ -464,11 +456,14 @@ void Array::reverse (void)
  */
 Array Array::slice (size_t begin)const
 {
-	Array* myArray=new Array[cur_size_];
+	int temp=0;
+	Array* myArray = new Array(cur_size_);
 	for(int i=begin;i<cur_size_;++i)
 	{
-		myArray[i]=data_[i];
+		(*myArray).data_[temp]=data_[i];
+		temp=temp+1;
 	}
+	return *myArray;
 }
 /**
  * @overload
@@ -479,9 +474,12 @@ Array Array::slice (size_t begin)const
  */
 Array Array::slice (size_t begin, size_t end)const
 {
-	Array* myArray=new Array[cur_size_];
+	int temp=0;
+	Array* myArray=new Array(cur_size_);
 	for(int i=begin;i<end;++i)
 	{
-		myArray[i]=data_[i];
+		(*myArray).data_[temp]=data_[i];
+		temp=temp+1;
 	}
+	return *myArray;
 }
