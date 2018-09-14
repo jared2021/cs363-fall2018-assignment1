@@ -111,6 +111,8 @@ Array::~Array (void)
 const Array & Array::operator = (const Array & rhs)
 {
   // COMMENT Check for self assignment first.
+  // RESPONSE Now checks for self assignment first before assigning values
+  // to the array.
 	if(this==&rhs)
 	{
 		return true;
@@ -124,8 +126,8 @@ const Array & Array::operator = (const Array & rhs)
     // RESPONSE Replaced the get() method with the array getting the value
     // at the passed in array's index
 			data_[i]=(rhs).data_[i];
-			return *this;
 		}
+		return *this;
   
   // COMMENT This method should return *this for call chaining.
   // RESPONSE Changed return statement to return the Array class itself 
@@ -344,6 +346,8 @@ int Array::find (char ch, size_t start) const
 bool Array::operator == (const Array & rhs) const
 {
   // COMMENT Check for self comparison first.
+  // RESPONSE Now checks whether the array's are the same before
+  // comparing the two arrays.
 	if(this==&rhs)
 	{
 		return true;
@@ -458,7 +462,7 @@ Array Array::slice (size_t begin)const
 {
 	int temp=0;
 	Array* myArray = new Array(cur_size_);
-	for(int i=begin;i<cur_size_;++i)
+	for(int i=begin;i<=cur_size_;++i)
 	{
 		(*myArray).data_[temp]=data_[i];
 		temp=temp+1;
@@ -476,7 +480,7 @@ Array Array::slice (size_t begin, size_t end)const
 {
 	int temp=0;
 	Array* myArray=new Array(cur_size_);
-	for(int i=begin;i<end;++i)
+	for(int i=begin;i<=end;++i)
 	{
 		(*myArray).data_[temp]=data_[i];
 		temp=temp+1;
