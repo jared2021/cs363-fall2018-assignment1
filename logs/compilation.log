@@ -1,0 +1,16 @@
+Generating 'make' output using default input
+Generation Time: 0s
+rm -rf Array.o driver.o
+g++  -fPIC -O -std=c++11 -D_REENTRANT -c  -o "Array.o" Array.cpp
+Array.cpp:293:1: warning: control may reach end of non-void function [-Wreturn-type]
+}
+^
+Array.cpp:338:1: warning: control may reach end of non-void function [-Wreturn-type]
+}
+^
+Array.cpp:393:1: warning: control may reach end of non-void function [-Wreturn-type]
+}
+^
+3 warnings generated.
+g++  -fPIC -O -std=c++11 -D_REENTRANT -c  -o "driver.o" driver.cpp
+g++  -fPIC -O -std=c++11 -D_REENTRANT -L"." Array.o driver.o -ldl  -lpthread -o "Array"
